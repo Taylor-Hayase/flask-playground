@@ -1,4 +1,6 @@
 from flask import Flask
+from flask import request
+
 app = Flask(__name__)
 
 users = { 
@@ -41,15 +43,35 @@ users = {
 def hello_world():
     return 'Hello, World!'
 
+# @app.route('/users')
+# @app.route('/users/<name>')
+# def get_users(name=None):
+#     if name :
+#         subdict = {"users_list" : []}
+#         for user in users["users_list"]:
+#             if user["username"] == name:
+#                 subdict["users_list"].append(user)
+#         return subdict
+#     return users
+
 @app.route('/users')
-@app.route('/users/<name>')
-def get_users(name=None):
-    if name :
+def get_users():
+    search_username = request.args.get('username')
+    if search_username :
         subdict = {"users_list" : []}
         for user in users["users_list"]:
-            if user["username"] == name:
+            if user["username"] == search_username:
                 subdict["users_list"].append(user)
         return subdict
+    return users
+
+@app.route('/users/<id>')
+def get_user(id):
+    if id :
+        for user in users["users_list"]:
+            if user["id"] == id:
+                return user
+        return ({})
     return users
 
 # @app.route('/users/<username>')
