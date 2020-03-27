@@ -5,3 +5,6 @@
 
 ## Quick Start Guide
 [Follow the official guide.](https://flask.palletsprojects.com/en/1.1.x/quickstart/)
+
+## RESTful APIs
+[This is a good quick guide.](https://restfulapi.net/)
