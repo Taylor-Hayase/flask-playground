@@ -27,6 +27,12 @@ users = {
             "username" : "gaby",
             "email" : "gaby33333@cuesta.edu",
             "university" : "Cuesta"
+        }, 
+        {
+            "id" : "zap555",
+            "username" : "gaby",
+            "email" : "gaby5555@cuesta.edu",
+            "university" : "Cuesta"
         } 
     ]
 }
@@ -36,5 +42,16 @@ def hello_world():
     return 'Hello, World!'
 
 @app.route('/users')
-def get_users():
+@app.route('/users/<name>')
+def get_users(name=None):
+    if name :
+        subdict = {"users_list" : []}
+        for user in users["users_list"]:
+            if user["username"] == name:
+                subdict["users_list"].append(user)
+        return subdict
     return users
+
+# @app.route('/users/<username>')
+# def get_users():
+#     return users
