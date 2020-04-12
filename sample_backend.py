@@ -4,38 +4,33 @@ from flask import request
 app = Flask(__name__)
 
 users = { 
-    "users_list" :
+    'users_list' :
     [
         {  
-            "id" : "xyz567",
-            "username" : "teddy",
-            "email" : "xyzteddy@calpoly.edu",
-            "university" : "Cal Poly"
+            'id' : 'xyz789',
+            'name' : 'Charlie',
+            'job': 'Janitor',
         },
         {
-            "id" : "abc567",
-            "username" : "bcdasilv",
-            "email" : "bcdasilv@calpoly.edu",
-            "university" : "Cal Poly"
+            'id' : 'abc123',            
+            'name': 'Mac',
+            'job': 'Bouncer',
         },
         {
-            "id" : "yat999",
-            "username" : "qwerty",
-            "email" : "qwerty@mit.edu",
-            "university" : "MIT"
+            'id' : 'ppp222',            
+            'name': 'Mac',
+            'job': 'Professor',
+        },        
+        {
+            'id' : 'yat999',            
+            'name': 'Dee',
+            'job': 'Aspring actress',
         },
         {
-            "id" : "oxz888",
-            "username" : "gaby",
-            "email" : "gaby33333@cuesta.edu",
-            "university" : "Cuesta"
-        }, 
-        {
-            "id" : "zap555",
-            "username" : "gaby",
-            "email" : "gaby5555@cuesta.edu",
-            "university" : "Cuesta"
-        } 
+             'id' : 'zap555',           
+            'name': 'Dennis',
+            'job': 'Bartender',
+        }
     ]
 }
 
@@ -45,20 +40,20 @@ def hello_world():
 
 @app.route('/users')
 def get_users():
-    search_username = request.args.get('username')
+    search_username = request.args.get('name')
     if search_username :
-        subdict = {"users_list" : []}
-        for user in users["users_list"]:
-            if user["username"] == search_username:
-                subdict["users_list"].append(user)
+        subdict = {'users_list' : []}
+        for user in users['users_list']:
+            if user['name'] == search_username:
+                subdict['users_list'].append(user)
         return subdict
     return users
 
 @app.route('/users/<id>')
 def get_user(id):
     if id :
-        for user in users["users_list"]:
-            if user["id"] == id:
+        for user in users['users_list']:
+            if user['id'] == id:
                 return user
         return ({})
     return users
