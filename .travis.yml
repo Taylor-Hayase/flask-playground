@@ -9,7 +9,7 @@ python:
 # Targeting different operating systems
 os:
   - linux
-  - osx
+  - windows
   
 # command to install dependencies
 install:
