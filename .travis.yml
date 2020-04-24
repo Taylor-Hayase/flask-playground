@@ -6,6 +6,11 @@ python:
   - "3.6"      # current default Python on Travis CI
   - "3.7"
 
+# Targeting different operating systems
+os:
+  - linux
+  - osx
+  
 # command to install dependencies
 install:
   - pip install -r requirements.txt
