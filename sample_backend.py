@@ -4,6 +4,8 @@ from flask import jsonify
 from flask_cors import CORS
 import random
 import string
+from model_mongodb import User
+
 
 app = Flask(__name__)
 
@@ -53,36 +55,36 @@ def get_users():
         if search_username and search_job :
             return find_users_by_name_job(search_username, search_job)  
         elif search_username :
-            return find_users_by_name(search_username)  
-        return users
+            # return find_users_by_name(search_username)  
+            users = User().find_by_name(search_username)
+        else :
+            users = User().find_all()
+        return {"users_list": users}
     elif request.method == 'POST':
         userToAdd = request.get_json()
-        userToAdd['id'] = generate_id()
-        users['users_list'].append(userToAdd)
-        resp = jsonify(userToAdd), 201
+        #userToAdd['id'] = generate_id()
+        #users['users_list'].append(userToAdd)
+        newUser = User(userToAdd)
+        newUser.save()
+        resp = jsonify(newUser), 201
         return resp
 
 @app.route('/users/<id>', methods=['GET', 'DELETE'])
 def get_user(id):
-    if id :
-        for user in users['users_list']:
-            if user['id'] == id:
-                if request.method == 'GET':
-                    return user
-                elif request.method == 'DELETE':
-                    users['users_list'].remove(user)
-                    resp = jsonify({}), 204
-                    return resp
-        resp = jsonify({"error": "User not found"}), 404
-        return resp
-    return users
+    if request.method == 'GET':
+        user = User({"_id":id})
+        user.reload()
+        return user
+    elif request.method == 'DELETE':
+        #?
+        return {}, 204
 
-def find_users_by_name(name):
-    subdict = {'users_list' : []}
-    for user in users['users_list']:
-        if user['name'] == name:
-            subdict['users_list'].append(user)
-    return subdict   
+# def find_users_by_name(name):
+#     subdict = {'users_list' : []}
+#     for user in users['users_list']:
+#         if user['name'] == name:
+#             subdict['users_list'].append(user)
+#     return subdict   
 
 def find_users_by_name_job(name, job):
     subdict = {'users_list' : []}
@@ -91,7 +93,7 @@ def find_users_by_name_job(name, job):
             subdict['users_list'].append(user)
     return subdict  
 
-def generate_id():
-    lettersAndDigits = string.ascii_letters + string.digits
-    return ''.join((random.choice(lettersAndDigits) for i in range(6)))
+# def generate_id():
+#     lettersAndDigits = string.ascii_letters + string.digits
+#     return ''.join((random.choice(lettersAndDigits) for i in range(6)))
     
